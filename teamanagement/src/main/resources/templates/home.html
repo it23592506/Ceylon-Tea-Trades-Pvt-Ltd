@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tea Supplier & Inventory Management</title>
+  <link rel="stylesheet" href="/styles.css">
+
+</head>
+<body>
+  <div class="dashboard">
+    <h1>🍃 Tea Supplier & Inventory 🍃</h1>
+    <button id="logoutBtn" style="position:absolute; top:20px; right:20px;">Logout</button>
+
+    <div class="container">
+      <!-- Supplier Form -->
+      <div class="card">
+        <h2>Add New Supplier</h2>
+        <form id="supplierForm">
+          <input type="text" id="supplierName" placeholder="Supplier Name" required>
+          <input type="text" id="supplierContact" placeholder="Contact Info" required>
+          <input type="text" id="supplierAddress" placeholder="Address" required>
+          <button type="submit">Add Supplier</button>
+        </form>
+      </div>
+
+      <!-- Inventory Form -->
+      <div class="card">
+        <h2>Add Inventory Item</h2>
+        <form id="inventoryForm">
+          <input type="text" id="productName" placeholder="Product Name" required>
+          <input type="number" id="quantity" placeholder="Quantity" required>
+          <input type="number" id="restockLevel" placeholder="Reorder Threshold" required>
+          <select id="supplierId" required>
+            <option value="">Select Supplier</option>
+          </select>
+          <button type="submit">Add Inventory</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="card">
+      <h2>Inventory List</h2>
+      <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Restock Level</th>
+            <th>Supplier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled by JavaScript dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Check if logged in
+    if (localStorage.getItem('loggedIn') !== 'true') {
+      window.location.href = '/index';
+
+
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('loggedIn');
+      window.location.href = '/index';
+
+    });
+
+    // Populate Supplier Dropdown
+    fetch('/api/suppliers')
+      .then(res => res.json())
+      .then(suppliers => {
+        const supplierSelect = document.getElementById('supplierId');
+        suppliers.forEach(supplier => {
+          const option = document.createElement('option');
+          option.value = supplier.supplierId;
+          option.textContent = supplier.name;
+          supplierSelect.appendChild(option);
+        });
+      });
+
+    // Add Supplier
+    document.getElementById('supplierForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('supplierName').value;
+      const contact = document.getElementById('supplierContact').value;
+      const address = document.getElementById('supplierAddress').value;
+
+      fetch('/api/suppliers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, contactInfo: contact, address })
+      }).then(response => {
+        if (response.ok) {
+          alert('Supplier added successfully!');
+          location.reload();
+        }
+      });
+    });
+
+    // Add Inventory
+    document.getElementById('inventoryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const productName = document.getElementById('productName').value;
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const restockLevel = parseInt(document.getElementById('restockLevel').value);
+      const supplierId = document.getElementById('supplierId').value;
+
+      fetch('/api/inventory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productName,
+          quantity,
+          restockLevel,
+          supplier: { supplierId }
+        })
+      }).then(response => {
+        if (response.ok) {
+          alert('Inventory item added successfully!');
+          location.reload();
+        }
+      });
+    });
+
+    // Load Inventory Table
+    fetch('/api/inventory')
+      .then(res => res.json())
+      .then(items => {
+        const tbody = document.querySelector('#inventoryTable tbody');
+        items.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.productName}</td>
+            <td>${item.quantity}</td>
+            <td>${item.restockLevel}</td>
+            <td>${item.supplier ? item.supplier.name : 'N/A'}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      });
+  </script>
+</body>
+</html>

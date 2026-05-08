@@ -1,0 +1,127 @@
+/* Base Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://th.bing.com/th/id/R.3e6f17be3c8cf57e55f4929b27c55b29?rik=gV%2bMD%2fgPV8HrgA&pid=ImgRaw&r=0');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+  
+  /* Dashboard */
+  .dashboard {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  /* Headings */
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #2a9d8f;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    color: #2a9d8f;
+    margin-bottom: 20px;
+  }
+  
+  /* Container */
+  .container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Cards */
+  .card {
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 30px;
+  }
+  
+  /* Form Elements */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  input, select, button {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  
+  input:focus, select:focus {
+    border-color: #2a9d8f;
+    box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
+    outline: none;
+  }
+  
+  /* Button */
+  button {
+    background-color: #2a9d8f;
+    color: #fff;
+    font-weight: bold;
+    transition: background 0.3s;
+    cursor: pointer;
+    border: none;
+  }
+  
+  button:hover {
+    background-color: #21867a;
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+  }
+  
+  th {
+    background-color: #2a9d8f;
+    color: white;
+  }
+  
+  tr:hover {
+    background-color: #e0f2f1;
+  }
+  
+  /* Low Stock */
+  .low-stock {
+    color: red;
+    font-weight: bold;
+  }
+  
